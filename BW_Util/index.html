@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+	<body>
+		<div>
+			<label>时间1:</label><input type="text" id="date1" placeholder="yyyy-MM-dd hh:mm:ss:SSS" size='100' /><br />
+			<label>时间2 /时区/ 偏移量:</label><input type="text" id="date2" placeholder="yyyy-MM-dd hh:mm:ss:SSS" size='100' /><br />
+			<label>格式:</label><input type="text" id="format" size='100' /><br />
+			<label>偏移类型:</label><input type="text" id="pyl" placeholder="" size='100' /><br />
+			<button onclick="nowDate1();">时间1</button>
+			<button onclick="nowDate2();">时间2</button>
+			<button onclick="str2Date();">时间1转时间</button>
+			<button onclick="dateIsLeaf();">时间1是否是闰年</button>
+			<button onclick="perm();">计时</button>
+			<button onclick="formatdate();">时间1日期格式化</button>
+			<button onclick="gapdate();">时间差+格式</button>
+			<button onclick="calcdate1();">时间偏移=时间1+偏移量+格式</button>
+			<button onclick="calcdate2();">时间偏移=时间1+偏移量+偏移类型</button>
+			<button onclick="datezone();">其他时区=时区+格式</button>
+		</div>
+		<div>
+			<button onclick="clear1();">清除</button><br>
+			<p>结果</p>
+			<div id="result"></div>
+		</div>
+	</body>
+	<script src="js/ObjectUtil.js"></script>
+	<script src="js/DateUtil.js"></script>
+	<script>
+		var date1 = document.getElementById('date1').value;
+		var date2 = document.getElementById('date2').value;
+		var format = document.getElementById('format').value;
+		var pyl = document.getElementById('pyl').value;
+		var result = document.getElementById('result');
+		document.getElementById('format').value = 'yyyy年MM月dd日 hh时mm分ss秒SSS毫秒'
+		document.getElementById('pyl').value = 'DAY'
+		var str = "";
+
+		function ff() {
+			result.innerHTML = str;
+		}
+
+		function init() {
+			date1 = document.getElementById('date1').value;
+			date2 = document.getElementById('date2').value;
+			format = document.getElementById('format').value;
+			pyl = document.getElementById('pyl').value;
+		}
+
+		function nowDate1() {
+			document.getElementById('date1').value = date2Str(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS');
+		}
+		function nowDate2() {
+			document.getElementById('date2').value = date2Str(new Date(), 'yyyy-MM-dd hh:mm:ss:SSS');
+		}
+
+		function clear1() {
+			str = "";
+			ff();
+		}
+
+		function str2Date() {
+			init()
+			str += '<p>时间1转时间:' + str2DateStrict(date1);
+			ff()
+		}
+
+		function dateIsLeaf() {
+			init()
+			str += '<p>时间1是否是闰年:' + isLeapYear_s(str2DateStrict(date1));
+			ff()
+		}
+
+		function perm() {
+			init()
+			str += '<p>计时:' + getTimeRap();
+			ff()
+		}
+
+		function formatdate() {
+
+			init()
+			str += '<p>时间1日期格式化:' + date2Str(str2DateStrict(date1), format);
+			ff()
+		}
+
+		function gapdate() {
+			init()
+			str = '<p>时间差+格式:' + gapOfDate(str2DateStrict(date1), str2DateStrict(date2), format);
+			ff()
+		}
+
+		function calcdate1() {
+			init()
+			str += '<p>时间偏移=时间1+偏移量+格式:' + calcDate(str2DateStrict(date1), date2, format);
+			ff()
+		}
+
+		function calcdate2() {
+			init()
+			str += '<p>时间偏移=时间1+偏移量+偏移类型:' + calcDateByType(str2DateStrict(date1), date2, pyl);
+			ff()
+		}
+
+		function datezone() {
+			init()
+			str += '<p>其他时区=时区:' + getOtherTimeZoneTime(date2);
+			ff()
+		}
+	</script>
+</html>
